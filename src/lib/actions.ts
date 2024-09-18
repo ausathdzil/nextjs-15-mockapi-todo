@@ -86,3 +86,18 @@ export async function updateTodo(
   revalidatePath('/');
   redirect('/');
 }
+
+export async function deleteTodo(id: string, prevState: { message: string }) {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
+      method: 'DELETE',
+    });
+  } catch (error) {
+    return {
+      message: 'Failed to delete todo',
+    };
+  }
+
+  revalidatePath('/');
+  redirect('/');
+}

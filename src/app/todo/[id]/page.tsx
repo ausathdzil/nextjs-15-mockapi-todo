@@ -1,5 +1,5 @@
-import UpdateTodoForm from '@/app/components/update-todo-form';
-import { getTodo } from '@/app/lib/data';
+import UpdateTodoForm from '@/components/update-todo-form';
+import { getTodo } from '@/lib/data';
 import { notFound } from 'next/navigation';
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -11,7 +11,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <section className="space-y-2">
-      <h1>Update Todo: {todo.title}</h1>
+      <h1 className="text-lg font-bold">Update Todo: {todo.title}</h1>
       <UpdateTodoForm todo={todo} />
     </section>
   );

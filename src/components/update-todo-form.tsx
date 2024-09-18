@@ -1,7 +1,8 @@
 'use client';
 
-import { updateTodo } from '@/app/lib/actions';
-import { Todo } from '@/app/lib/data';
+import { updateTodo } from '@/lib/actions';
+import { Todo } from '@/lib/data';
+import Link from 'next/link';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 
@@ -9,23 +10,10 @@ const initialState = {
   message: '',
 };
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      className="bg-foreground text-background rounded px-4 py-2"
-      disabled={pending}
-      type="submit"
-    >
-      Update
-    </button>
-  );
-}
-
 export default function UpdateTodoForm({ todo }: { todo: Todo }) {
   const updateTodoById = updateTodo.bind(null, todo.id);
   const [state, formAction] = useActionState(updateTodoById, initialState);
+  const { pending } = useFormStatus();
 
   return (
     <>
@@ -47,7 +35,20 @@ export default function UpdateTodoForm({ todo }: { todo: Todo }) {
           defaultValue={todo.status}
           placeholder="Status"
         />
-        <SubmitButton />
+        <div className="flex justify-between items-center gap-2">
+          <Link href="/">
+            <button className="border-2 border-foreground rounded px-4 py-2">
+              Cancel
+            </button>
+          </Link>
+          <button
+            className="bg-foreground text-background rounded px-4 py-2"
+            disabled={pending}
+            type="submit"
+          >
+            Update
+          </button>
+        </div>
       </form>
     </>
   );

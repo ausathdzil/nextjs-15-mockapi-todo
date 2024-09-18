@@ -1,6 +1,6 @@
 'use client';
 
-import createTodo from '@/app/lib/actions';
+import createTodo from '@/lib/actions';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 
@@ -8,22 +8,9 @@ const initialState = {
   message: '',
 };
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      className="bg-foreground text-background rounded px-4 py-2"
-      disabled={pending}
-      type="submit"
-    >
-      Create
-    </button>
-  );
-}
-
 export default function CreateTodoForm() {
   const [state, formAction] = useActionState(createTodo, initialState);
+  const { pending } = useFormStatus();
 
   return (
     <>
@@ -44,7 +31,13 @@ export default function CreateTodoForm() {
           name="title"
           placeholder="Add a new todo"
         />
-        <SubmitButton />
+        <button
+          className="bg-foreground text-background rounded px-4 py-2"
+          disabled={pending}
+          type="submit"
+        >
+          Create
+        </button>
       </form>
       <p aria-live="polite">{state?.message}</p>
     </>
