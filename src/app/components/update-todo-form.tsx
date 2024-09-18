@@ -1,6 +1,7 @@
 'use client';
 
-import createTodo from '@/app/lib/actions';
+import { updateTodo } from '@/app/lib/actions';
+import { Todo } from '@/app/lib/data';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 
@@ -17,36 +18,37 @@ function SubmitButton() {
       disabled={pending}
       type="submit"
     >
-      Create
+      Update
     </button>
   );
 }
 
-export default function CreateTodoForm() {
-  const [state, formAction] = useActionState(createTodo, initialState);
+export default function UpdateTodoForm({ todo }: { todo: Todo }) {
+  const updateTodoById = updateTodo.bind(null, todo.id);
+  const [state, formAction] = useActionState(updateTodoById, initialState);
 
   return (
     <>
       <form
-        className="flex gap-1 border-2 border-foreground rounded p-2"
+        className="flex flex-col gap-4"
         action={formAction}
       >
-        <label
-          className="sr-only"
-          htmlFor="title"
-        >
-          Title
-        </label>
         <input
           className="w-full border-2 border-foreground rounded px-2 py-1"
           type="text"
-          id="title"
           name="title"
-          placeholder="Add a new todo"
+          defaultValue={todo.title}
+          placeholder="Title"
+        />
+        <input
+          className="w-full border-2 border-foreground rounded px-2 py-1"
+          type="status"
+          name="status"
+          defaultValue={todo.status}
+          placeholder="Status"
         />
         <SubmitButton />
       </form>
-      <p aria-live="polite">{state?.message}</p>
     </>
   );
 }

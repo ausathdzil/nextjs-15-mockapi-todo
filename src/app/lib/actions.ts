@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 const FormSchema = z.object({
@@ -43,4 +44,45 @@ export default async function createTodo(
       message: 'Failed to create todo',
     };
   }
+}
+
+const UpdateTodoSchema = z.object({
+  createdAt: z.string(),
+  title: z.string().min(1),
+  status: z.string(),
+});
+
+export async function updateTodo(
+  id: string,
+  prevState: { message: string },
+  formData: FormData
+) {
+  const validatedFields = UpdateTodoSchema.safeParse({
+    createdAt: new Date().toISOString(),
+    title: formData.get('title'),
+    status: formData.get('status'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      message: 'Failed to update todo',
+    };
+  }
+
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(validatedFields.data),
+    });
+  } catch (error) {
+    return {
+      message: 'Failed to update todo',
+    };
+  }
+
+  revalidatePath('/');
+  redirect('/');
 }

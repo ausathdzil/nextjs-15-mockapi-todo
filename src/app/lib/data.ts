@@ -1,4 +1,4 @@
-interface Todo {
+export interface Todo {
   id: string;
   createdAt: string;
   title: string;
@@ -12,7 +12,7 @@ export async function getTodos() {
 }
 
 export async function getTodo(id: string) {
-  let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`);
+  let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`);
   let todo: Todo = await res.json();
   return todo;
 }
