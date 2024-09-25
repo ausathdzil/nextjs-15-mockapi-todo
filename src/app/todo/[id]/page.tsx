@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   return (
-    <section className="space-y-2">
+    <section className="w-full max-w-md space-y-4">
       <h1 className="text-lg font-bold">Update Todo: {todo.title}</h1>
       <UpdateTodoForm todo={todo} />
     </section>

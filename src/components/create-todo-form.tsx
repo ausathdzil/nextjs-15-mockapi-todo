@@ -1,43 +1,35 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import createTodo from '@/lib/actions';
 import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
 
 const initialState = {
   message: '',
 };
 
 export default function CreateTodoForm() {
-  const [state, formAction] = useActionState(createTodo, initialState);
-  const { pending } = useFormStatus();
+  const [state, formAction, pending] = useActionState(createTodo, initialState);
 
   return (
     <>
       <form
-        className="flex gap-1 border-2 border-foreground rounded p-2"
+        className="space-y-2"
         action={formAction}
       >
-        <label
-          className="sr-only"
-          htmlFor="title"
-        >
-          Title
-        </label>
-        <input
-          className="w-full border-2 border-foreground rounded px-2 py-1"
-          type="text"
+        <Label htmlFor="title">Title</Label>
+        <Input
           id="title"
           name="title"
-          placeholder="Add a new todo"
         />
-        <button
-          className="bg-foreground text-background rounded px-4 py-2"
-          disabled={pending}
+        <Button
           type="submit"
+          disabled={pending}
         >
-          Create
-        </button>
+          Add todo
+        </Button>
       </form>
       <p aria-live="polite">{state?.message}</p>
     </>

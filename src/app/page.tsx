@@ -7,12 +7,12 @@ export default async function Home() {
   let todos = await getTodos();
 
   return (
-    <section className="space-y-2">
+    <section className="w-full max-w-md space-y-8">
       <CreateTodoForm />
       <ul className="space-y-2">
         {todos.map((todo) => (
           <li
-            className="flex justify-between items-center border-2 border-foreground rounded p-2"
+            className="p-4 flex items-center justify-between border border-zinc-500 rounded-lg"
             key={todo.id}
           >
             <Link
