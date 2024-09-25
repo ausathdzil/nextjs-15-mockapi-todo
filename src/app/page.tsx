@@ -1,5 +1,6 @@
 import CreateTodoForm from '@/components/create-todo-form';
 import DeleteTodoForm from '@/components/delete-todo-form';
+import { Toaster } from '@/components/ui/sonner';
 import { getTodos } from '@/lib/data';
 import Link from 'next/link';
 
@@ -25,6 +26,8 @@ export default async function Home() {
           </li>
         ))}
       </ul>
+      <Toaster />
     </section>
   );
 }
+

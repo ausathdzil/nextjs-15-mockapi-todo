@@ -1,7 +1,6 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 const FormSchema = z.object({
@@ -11,7 +10,7 @@ const FormSchema = z.object({
 });
 
 export default async function createTodo(
-  prevState: { message: string },
+  prevState: { message: string; success: boolean },
   formData: FormData
 ) {
   const validatedFields = FormSchema.safeParse({
@@ -23,6 +22,7 @@ export default async function createTodo(
   if (!validatedFields.success) {
     return {
       message: 'Failed to create todo',
+      success: false,
     };
   }
 
@@ -38,10 +38,12 @@ export default async function createTodo(
     revalidatePath('/');
     return {
       message: `Added todo: ${validatedFields.data.title}`,
+      success: true,
     };
   } catch (error) {
     return {
       message: 'Failed to create todo',
+      success: false,
     };
   }
 }
@@ -54,7 +56,7 @@ const UpdateTodoSchema = z.object({
 
 export async function updateTodo(
   id: string,
-  prevState: { message: string },
+  prevState: { message: string; success: boolean },
   formData: FormData
 ) {
   const validatedFields = UpdateTodoSchema.safeParse({
@@ -66,6 +68,7 @@ export async function updateTodo(
   if (!validatedFields.success) {
     return {
       message: 'Failed to update todo',
+      success: false,
     };
   }
 
@@ -77,27 +80,41 @@ export async function updateTodo(
       },
       body: JSON.stringify(validatedFields.data),
     });
+
+    revalidatePath('/');
+    return {
+      message: `Updated todo: ${id}`,
+      success: true,
+    };
   } catch (error) {
     return {
       message: 'Failed to update todo',
+      success: false,
     };
   }
-
-  revalidatePath('/');
-  redirect('/');
 }
 
-export async function deleteTodo(id: string, prevState: { message: string }) {
+export async function deleteTodo(
+  id: string,
+  prevState: { message: string; success: boolean }
+) {
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
       method: 'DELETE',
     });
+
+    if (!res.ok) {
+      throw new Error('Failed to delete todo');
+    }
+
+    return {
+      message: `Deleted todo: ${id}`,
+      success: true,
+    };
   } catch (error) {
     return {
       message: 'Failed to delete todo',
+      success: false,
     };
   }
-
-  revalidatePath('/');
-  redirect('/');
 }

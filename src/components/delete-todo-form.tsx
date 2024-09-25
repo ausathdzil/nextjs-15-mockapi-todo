@@ -1,11 +1,14 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { deleteTodo } from '@/lib/actions';
-import { useActionState } from 'react';
-import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
+import { useActionState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 const initialState = {
   message: '',
+  success: false,
 };
 
 export default function DeleteTodoForm({ id }: { id: string }) {
@@ -14,6 +17,19 @@ export default function DeleteTodoForm({ id }: { id: string }) {
     deleteTodoById,
     initialState
   );
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state && state.message) {
+      if (state.success) {
+        toast.success(state.message);
+      } else {
+        toast.error(state.message);
+      }
+
+      router.push('/');
+    }
+  }, [state]);
 
   return (
     <form action={formAction}>

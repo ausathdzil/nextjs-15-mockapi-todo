@@ -29,12 +29,18 @@ importers:
       next:
         specifier: 15.0.0-rc.0
         version: 15.0.0-rc.0(react-dom@19.0.0-rc-a99d8e8d-20240916(react@19.0.0-rc-a99d8e8d-20240916))(react@19.0.0-rc-a99d8e8d-20240916)
+      next-themes:
+        specifier: ^0.3.0
+        version: 0.3.0(react-dom@19.0.0-rc-a99d8e8d-20240916(react@19.0.0-rc-a99d8e8d-20240916))(react@19.0.0-rc-a99d8e8d-20240916)
       react:
         specifier: 19.0.0-rc-a99d8e8d-20240916
         version: 19.0.0-rc-a99d8e8d-20240916
       react-dom:
         specifier: 19.0.0-rc-a99d8e8d-20240916
         version: 19.0.0-rc-a99d8e8d-20240916(react@19.0.0-rc-a99d8e8d-20240916)
+      sonner:
+        specifier: ^1.5.0
+        version: 1.5.0(react-dom@19.0.0-rc-a99d8e8d-20240916(react@19.0.0-rc-a99d8e8d-20240916))(react@19.0.0-rc-a99d8e8d-20240916)
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.5.2
@@ -1247,6 +1253,12 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
+  next-themes@0.3.0:
+    resolution: {integrity: sha512-/QHIrsYpd6Kfk7xakK4svpDI5mmXP0gfvCoJdGpZQ2TOrQZmsW0QxjaiLn8wbIKjtm4BTSqLoix4lxYYOnLJ/w==}
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18
+      react-dom: ^16.8 || ^17 || ^18
+
   next@15.0.0-rc.0:
     resolution: {integrity: sha512-IWcCvxUSCAuOK5gig4+9yiyt/dLKpIa+WT01Qcx4CBE4TtwJljyTDnCVVn64jDZ4qmSzsaEYXpb4DTI8qbk03A==}
     engines: {node: '>=18.17.0'}
@@ -1543,6 +1555,12 @@ packages:
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
+
+  sonner@1.5.0:
+    resolution: {integrity: sha512-FBjhG/gnnbN6FY0jaNnqZOMmB73R+5IiyYAw8yBj7L54ER7HB3fOSE5OFiQiE2iXWxeXKvg6fIP4LtVppHEdJA==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -3080,6 +3098,11 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
+  next-themes@0.3.0(react-dom@19.0.0-rc-a99d8e8d-20240916(react@19.0.0-rc-a99d8e8d-20240916))(react@19.0.0-rc-a99d8e8d-20240916):
+    dependencies:
+      react: 19.0.0-rc-a99d8e8d-20240916
+      react-dom: 19.0.0-rc-a99d8e8d-20240916(react@19.0.0-rc-a99d8e8d-20240916)
+
   next@15.0.0-rc.0(react-dom@19.0.0-rc-a99d8e8d-20240916(react@19.0.0-rc-a99d8e8d-20240916))(react@19.0.0-rc-a99d8e8d-20240916):
     dependencies:
       '@next/env': 15.0.0-rc.0
@@ -3403,6 +3426,11 @@ snapshots:
     optional: true
 
   slash@3.0.0: {}
+
+  sonner@1.5.0(react-dom@19.0.0-rc-a99d8e8d-20240916(react@19.0.0-rc-a99d8e8d-20240916))(react@19.0.0-rc-a99d8e8d-20240916):
+    dependencies:
+      react: 19.0.0-rc-a99d8e8d-20240916
+      react-dom: 19.0.0-rc-a99d8e8d-20240916(react@19.0.0-rc-a99d8e8d-20240916)
 
   source-map-js@1.2.1: {}
 
