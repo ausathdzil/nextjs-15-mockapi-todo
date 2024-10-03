@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { updateTodo } from '@/lib/actions';
+import { State, updateTodo } from '@/lib/actions';
 import { Todo } from '@/lib/data';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -12,8 +12,16 @@ import { useActionState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 export default function UpdateTodoForm({ todo }: { todo: Todo }) {
+  const initialState: State = {
+    success: false,
+    message: null,
+    errors: {},
+  };
   const updateTodoById = updateTodo.bind(null, todo.id);
-  const [state, formAction, pending] = useActionState(updateTodoById, null);
+  const [state, formAction, pending] = useActionState(
+    updateTodoById,
+    initialState
+  );
   const router = useRouter();
 
   useEffect(() => {

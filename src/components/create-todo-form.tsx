@@ -4,12 +4,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import createTodo from '@/lib/actions';
+import createTodo, { State } from '@/lib/actions';
 import { useActionState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 export default function CreateTodoForm() {
-  const [state, formAction, pending] = useActionState(createTodo, null);
+  const initialState: State = {
+    success: false,
+    message: null,
+    errors: {},
+  }
+  const [state, formAction, pending] = useActionState(createTodo, initialState);
 
   useEffect(() => {
     if (state && state.message) {

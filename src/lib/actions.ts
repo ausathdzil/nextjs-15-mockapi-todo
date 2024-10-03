@@ -22,56 +22,54 @@ const FormSchema = z.object({
     }),
 });
 
-export default async function createTodo(prevState: any, formData: FormData) {
+export type State = {
+  success: boolean;
+  message?: string | null;
+  errors?: {
+    title?: string[];
+    body?: string[];
+  };
+};
+
+export default async function createTodo(prevState: State, formData: FormData) {
   const validatedFields = FormSchema.safeParse({
     title: formData.get('title'),
     body: formData.get('body'),
   });
 
   if (!validatedFields.success) {
-    const errors = validatedFields.error.flatten().fieldErrors;
     return {
       success: false,
-      errors,
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Invalid form data',
     };
   }
 
   try {
-    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(validatedFields.data),
     });
-
-    if (!res.ok) {
-      throw new Error('Failed to create todo');
-    }
-
-    revalidatePath('/');
-    return {
-      success: true,
-      message: `Added todo: ${validatedFields.data.title}`,
-    };
   } catch (error) {
-    if (error instanceof Error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    } else {
-      return {
-        success: false,
-        message: 'An unknown error occurred',
-      };
-    }
+    return {
+      success: false,
+      message: 'Failed to add todo',
+    };
   }
+
+  revalidatePath('/');
+  return {
+    success: true,
+    message: `Added todo: ${validatedFields.data.title}`,
+  };
 }
 
 export async function updateTodo(
   id: string,
-  prevState: any,
+  prevState: State,
   formData: FormData
 ) {
   const validatedFields = FormSchema.safeParse({
@@ -80,71 +78,49 @@ export async function updateTodo(
   });
 
   if (!validatedFields.success) {
-    const errors = validatedFields.error.flatten().fieldErrors;
     return {
       success: false,
-      errors,
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Invalid form data',
     };
   }
 
   try {
-    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(validatedFields.data),
     });
-
-    if (!res.ok) {
-      throw new Error('Failed to update todo');
-    }
-
-    revalidatePath('/');
-    return {
-      message: `Updated todo with id: ${id}`,
-      success: true,
-    };
   } catch (error) {
-    if (error instanceof Error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    } else {
-      return {
-        success: false,
-        message: 'An unknown error occurred',
-      };
-    }
+    return {
+      success: false,
+      message: 'Failed to update todo',
+    };
   }
+
+  revalidatePath('/');
+  return {
+    success: true,
+    message: `Updated todo with id: ${id}`,
+  };
 }
 
 export async function deleteTodo(id: string, prevState: any) {
   try {
-    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
       method: 'DELETE',
     });
-
-    if (!res.ok) {
-      throw new Error('Failed to delete todo');
-    }
-
-    return {
-      success: true,
-      message: `Deleted todo with id: ${id}`,
-    };
   } catch (error) {
-    if (error instanceof Error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    } else {
-      return {
-        success: false,
-        message: 'An unknown error occurred',
-      };
-    }
+    return {
+      success: false,
+      message: 'Failed to delete todo',
+    };
   }
+
+  return {
+    success: true,
+    message: `Deleted todo with id: ${id}`,
+  };
 }
