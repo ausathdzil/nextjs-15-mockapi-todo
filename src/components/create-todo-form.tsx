@@ -26,19 +26,10 @@ export default function CreateTodoForm() {
   }, [state]);
 
   return (
-    <form
-      className="space-y-2"
-      action={formAction}
-    >
+    <form className="space-y-2" action={formAction}>
       <Label htmlFor="title">Title</Label>
-      <Input
-        id="title"
-        name="title"
-      />
-      <Button
-        type="submit"
-        disabled={pending}
-      >
+      <Input id="title" name="title" />
+      <Button type="submit" disabled={pending}>
         Add todo
       </Button>
     </form>

@@ -31,28 +31,14 @@ export default function UpdateTodoForm({ todo }: { todo: Todo }) {
   }, [state]);
 
   return (
-    <form
-      className="space-y-4"
-      action={formAction}
-    >
-      <Input
-        id="title"
-        name="title"
-        defaultValue={todo.title}
-      />
-      <Input
-        id="status"
-        name="status"
-        defaultValue={todo.status}
-      />
+    <form className="space-y-4" action={formAction}>
+      <Input id="title" name="title" defaultValue={todo.title} />
+      <Input id="status" name="status" defaultValue={todo.status} />
       <div className="flex justify-between items-center gap-2">
         <Link href="/">
           <Button variant="secondary">Cancel</Button>
         </Link>
-        <Button
-          type="submit"
-          disabled={pending}
-        >
+        <Button type="submit" disabled={pending}>
           Update todo
         </Button>
       </div>

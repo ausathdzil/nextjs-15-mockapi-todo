@@ -33,11 +33,7 @@ export default function DeleteTodoForm({ id }: { id: string }) {
 
   return (
     <form action={formAction}>
-      <Button
-        type="submit"
-        variant="destructive"
-        disabled={pending}
-      >
+      <Button type="submit" variant="destructive" disabled={pending}>
         Delete
       </Button>
     </form>

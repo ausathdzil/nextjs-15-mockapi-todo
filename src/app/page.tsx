@@ -16,10 +16,7 @@ export default async function Home() {
             className="p-4 flex items-center justify-between border border-zinc-500 rounded-lg"
             key={todo.id}
           >
-            <Link
-              className="hover:underline"
-              href={`/todo/${todo.id}`}
-            >
+            <Link className="hover:underline" href={`/todo/${todo.id}`}>
               {todo.title}
             </Link>
             <DeleteTodoForm id={todo.id} />
@@ -30,4 +27,3 @@ export default async function Home() {
     </section>
   );
 }
-
