@@ -2,6 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { updateTodo } from '@/lib/actions';
 import { Todo } from '@/lib/data';
 import Link from 'next/link';
@@ -27,15 +29,29 @@ export default function UpdateTodoForm({ todo }: { todo: Todo }) {
 
   return (
     <form className="space-y-4" action={formAction}>
-      <Input id="title" name="title" defaultValue={todo.title} />
-      {state?.errors?.title && (
-        <p className="text-sm text-destructive">{state.errors.title}</p>
-      )}
+      <div>
+        <Label htmlFor="title">Title</Label>
+        <Input
+          name="title"
+          defaultValue={todo.title}
+          placeholder="Todo title"
+        />
+        {state?.errors?.title && (
+          <p className="text-sm text-destructive">{state.errors.title}</p>
+        )}
+      </div>
 
-      <Input id="body" name="body" defaultValue={todo.body} />
-      {state?.errors?.body && (
-        <p className="text-sm text-destructive">{state.errors.body}</p>
-      )}
+      <div>
+        <Label htmlFor="body">Body</Label>
+        <Textarea
+          name="body"
+          defaultValue={todo.body}
+          placeholder="Todo body"
+        />
+        {state?.errors?.body && (
+          <p className="text-sm text-destructive">{state.errors.body}</p>
+        )}
+      </div>
 
       <div className="flex justify-between items-center gap-2">
         <Link href="/">

@@ -21,7 +21,7 @@ export default async function Home() {
       <ul className="space-y-2">
         {todos.map((todo) => (
           <li
-            className="p-4 flex items-center justify-between border border-zinc-500 rounded-lg"
+            className="p-4 flex items-center justify-between shadow rounded-lg"
             key={todo.id}
           >
             <div className="flex flex-col">
