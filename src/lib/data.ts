@@ -1,18 +1,31 @@
 export interface Todo {
   id: string;
-  createdAt: string;
   title: string;
-  status: string;
+  body: string;
 }
 
 export async function getTodos() {
-  let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`);
-  let todos: Todo[] = await res.json();
-  return todos;
+  try {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`);
+    if (!res.ok) {
+      throw new Error('Failed to fetch todos');
+    }
+    let todos: Todo[] = await res.json();
+    return todos;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function getTodo(id: string) {
-  let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`);
-  let todo: Todo = await res.json();
-  return todo;
+  try {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`);
+    if (!res.ok) {
+      throw new Error('Failed to fetch todo');
+    }
+    let todo: Todo = await res.json();
+    return todo;
+  } catch (error) {
+    return null;
+  }
 }

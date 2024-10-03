@@ -4,30 +4,40 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 const FormSchema = z.object({
-  createdAt: z.string(),
-  title: z.string().min(1),
-  status: z.string(),
+  title: z
+    .string()
+    .min(1, {
+      message: 'Title is required',
+    })
+    .max(50, {
+      message: 'Title must be less than 50 characters',
+    }),
+  body: z
+    .string()
+    .min(1, {
+      message: 'Body is required',
+    })
+    .max(200, {
+      message: 'Body must be less than 200 characters',
+    }),
 });
 
-export default async function createTodo(
-  prevState: { message: string; success: boolean },
-  formData: FormData
-) {
+export default async function createTodo(prevState: any, formData: FormData) {
   const validatedFields = FormSchema.safeParse({
-    createdAt: new Date().toISOString(),
     title: formData.get('title'),
-    status: 'pending',
+    body: formData.get('body'),
   });
 
   if (!validatedFields.success) {
+    const errors = validatedFields.error.flatten().fieldErrors;
     return {
-      message: 'Failed to create todo',
       success: false,
+      errors,
     };
   }
 
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,45 +45,50 @@ export default async function createTodo(
       body: JSON.stringify(validatedFields.data),
     });
 
+    if (!res.ok) {
+      throw new Error('Failed to create todo');
+    }
+
     revalidatePath('/');
     return {
-      message: `Added todo: ${validatedFields.data.title}`,
       success: true,
+      message: `Added todo: ${validatedFields.data.title}`,
     };
   } catch (error) {
-    return {
-      message: 'Failed to create todo',
-      success: false,
-    };
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    } else {
+      return {
+        success: false,
+        message: 'An unknown error occurred',
+      };
+    }
   }
 }
 
-const UpdateTodoSchema = z.object({
-  createdAt: z.string(),
-  title: z.string().min(1),
-  status: z.string(),
-});
-
 export async function updateTodo(
   id: string,
-  prevState: { message: string; success: boolean },
+  prevState: any,
   formData: FormData
 ) {
-  const validatedFields = UpdateTodoSchema.safeParse({
-    createdAt: new Date().toISOString(),
+  const validatedFields = FormSchema.safeParse({
     title: formData.get('title'),
-    status: formData.get('status'),
+    body: formData.get('body'),
   });
 
   if (!validatedFields.success) {
+    const errors = validatedFields.error.flatten().fieldErrors;
     return {
-      message: 'Failed to update todo',
       success: false,
+      errors,
     };
   }
 
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -81,23 +96,31 @@ export async function updateTodo(
       body: JSON.stringify(validatedFields.data),
     });
 
+    if (!res.ok) {
+      throw new Error('Failed to update todo');
+    }
+
     revalidatePath('/');
     return {
-      message: `Updated todo: ${id}`,
+      message: `Updated todo with id: ${id}`,
       success: true,
     };
   } catch (error) {
-    return {
-      message: 'Failed to update todo',
-      success: false,
-    };
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    } else {
+      return {
+        success: false,
+        message: 'An unknown error occurred',
+      };
+    }
   }
 }
 
-export async function deleteTodo(
-  id: string,
-  prevState: { message: string; success: boolean }
-) {
+export async function deleteTodo(id: string, prevState: any) {
   try {
     let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${id}`, {
       method: 'DELETE',
@@ -108,13 +131,20 @@ export async function deleteTodo(
     }
 
     return {
-      message: `Deleted todo: ${id}`,
       success: true,
+      message: `Deleted todo with id: ${id}`,
     };
   } catch (error) {
-    return {
-      message: 'Failed to delete todo',
-      success: false,
-    };
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    } else {
+      return {
+        success: false,
+        message: 'An unknown error occurred',
+      };
+    }
   }
 }

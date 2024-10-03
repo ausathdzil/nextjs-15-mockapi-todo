@@ -6,17 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
 import { toast } from 'sonner';
 
-const initialState = {
-  message: '',
-  success: false,
-};
-
 export default function DeleteTodoForm({ id }: { id: string }) {
   const deleteTodoById = deleteTodo.bind(null, id);
-  const [state, formAction, pending] = useActionState(
-    deleteTodoById,
-    initialState
-  );
+  const [state, formAction, pending] = useActionState(deleteTodoById, null);
   const router = useRouter();
 
   useEffect(() => {
