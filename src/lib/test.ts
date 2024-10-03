@@ -22,7 +22,7 @@ const formSchema = z.object({
     }),
 });
 
-export async function createTodo(formData: FormData) {
+export async function createTodo(prevState: any, formData: FormData) {
   const validatedFields = formSchema.safeParse({
     title: formData.get('title'),
     body: formData.get('body'),
@@ -38,7 +38,7 @@ export async function createTodo(formData: FormData) {
 
   try {
     const res = await fetch(
-      'https://66c18b97f83fffcb58798e8c.mockapi.io/api/v1/',
+      'https://66c18b97f83fffcb58798e8c.mockapi.io/api/v1/todos',
       {
         method: 'POST',
         headers: {
