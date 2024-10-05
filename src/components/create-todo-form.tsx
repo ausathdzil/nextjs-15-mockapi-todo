@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import createTodo, { State } from '@/lib/actions';
-import { useActionState, useEffect } from 'react';
+import { startTransition, useActionState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 export default function CreateTodoForm() {
@@ -13,7 +13,7 @@ export default function CreateTodoForm() {
     success: false,
     message: null,
     errors: {},
-  }
+  };
   const [state, formAction, pending] = useActionState(createTodo, initialState);
 
   useEffect(() => {
@@ -26,12 +26,19 @@ export default function CreateTodoForm() {
     }
   }, [state]);
 
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    startTransition(() => {
+      formAction(new FormData(event.currentTarget));
+    });
+  }
+
   return (
-    <form className="space-y-2" action={formAction}>
+    <form className="space-y-2" onSubmit={handleSubmit}>
       <div>
         <Label htmlFor="title">Title</Label>
         <Input id="title" name="title" placeholder="Todo title" />
-        {state?.errors?.title && (
+        {state.errors?.title && (
           <p className="text-sm text-destructive">{state.errors.title}</p>
         )}
       </div>
@@ -39,7 +46,7 @@ export default function CreateTodoForm() {
       <div>
         <Label htmlFor="body">Body</Label>
         <Textarea id="body" name="body" placeholder="Todo body" />
-        {state?.errors?.body && (
+        {state.errors?.body && (
           <p className="text-sm text-destructive">{state.errors.body}</p>
         )}
       </div>

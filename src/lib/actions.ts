@@ -46,7 +46,7 @@ export default async function createTodo(prevState: State, formData: FormData) {
   }
 
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
+    await fetch(process.env.NEXT_PUBLIC_API_URL!, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
