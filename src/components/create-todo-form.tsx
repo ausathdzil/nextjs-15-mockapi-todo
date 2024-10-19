@@ -26,7 +26,7 @@ export default function CreateTodoForm() {
     }
   }, [state]);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     startTransition(() => {
       formAction(new FormData(event.currentTarget));

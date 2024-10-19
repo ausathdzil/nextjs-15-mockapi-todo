@@ -8,7 +8,7 @@ import { State, updateTodo } from '@/lib/actions';
 import { Todo } from '@/lib/data';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useActionState, useEffect } from 'react';
+import { startTransition, useActionState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 export default function UpdateTodoForm({ todo }: { todo: Todo }) {
@@ -35,8 +35,15 @@ export default function UpdateTodoForm({ todo }: { todo: Todo }) {
     }
   }, [state]);
 
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    startTransition(() => {
+      formAction(new FormData(event.currentTarget));
+    });
+  }
+
   return (
-    <form className="space-y-4" action={formAction}>
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div>
         <Label htmlFor="title">Title</Label>
         <Input
